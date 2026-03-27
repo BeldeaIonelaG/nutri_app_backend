@@ -5,6 +5,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -13,13 +15,15 @@ data class CompositionAlimentEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    @Column(name = "id_aliment")
-    val idAliment: Int,
+    @ManyToOne
+    @JoinColumn(name = "id_aliment")
+    val aliment: AlimentEntity,
 
-    @Column(name = "id_nutrient")
-    val idNutrient: Int,
+    @ManyToOne
+    @JoinColumn(name = "id_nutrient")
+    val nutrient: NutrientEntity,
 
-    @Column(name = "amount_per_100g")
+    @Column(name = "amount_per100g")
     val amountPer100g: Double
 )
 

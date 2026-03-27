@@ -20,7 +20,7 @@ class AlimentService(
         val comps = compRepo.findByIdAliment(id)
 
         val nutrients = comps.map {
-            val nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
+            val nutrient = nutrientRepo.findById(1).orElseThrow()
             mapOf(
                 "nutrient" to nutrient.name,
                 "amount" to it.amountPer100g,
