@@ -3,12 +3,12 @@ package com.example.nutriapp.backend.service
 import com.example.nutriapp.backend.dto.NutrientDTO
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.mappers.toEntity
-import com.example.nutriapp.backend.repository.NutrientJpaRepository
+import com.example.nutriapp.backend.repository.NutrientRepository
 import org.springframework.stereotype.Service
 
 @Service
 class NutrientService(
-    private val repository: NutrientJpaRepository
+    private val repository: NutrientRepository
 ) {
 
     fun getAll(): List<NutrientDTO> =
