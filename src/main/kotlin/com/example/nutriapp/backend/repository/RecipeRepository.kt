@@ -1,6 +1,2 @@
 package com.example.nutriapp.backend.repository
 
-import com.example.nutriapp.backend.entity.RecipeEntity
-import org.springframework.data.jpa.repository.JpaRepository
-
-interface RecipeRepository : JpaRepository<RecipeEntity, Int>
