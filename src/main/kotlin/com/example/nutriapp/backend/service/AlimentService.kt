@@ -27,7 +27,8 @@ class AlimentService(
         val aliment = AlimentEntity(
             name = dto.name,
             description = dto.description,
-            type = dto.type
+            type = dto.type,
+            updatedAt = System.currentTimeMillis()
         )
 
         val saved = alimentRepo.save(aliment)
@@ -63,7 +64,8 @@ class AlimentService(
                 name = dto.name,
                 description = dto.description,
                 type = dto.type,
-                compositions = compositions
+                compositions = compositions,
+                updatedAt = System.currentTimeMillis()
             )
         )
 

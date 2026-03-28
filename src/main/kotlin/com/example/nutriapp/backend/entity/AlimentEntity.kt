@@ -1,6 +1,7 @@
 package com.example.nutriapp.backend.entity
 
 import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -23,5 +24,8 @@ data class AlimentEntity(
     val type: String,
 
     @OneToMany(mappedBy = "aliment", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val compositions: List<CompositionAlimentEntity> = emptyList()
+    val compositions: List<CompositionAlimentEntity> = emptyList(),
+
+    @Column(name = "updated_at")
+    val updatedAt: Long = System.currentTimeMillis()
 )
