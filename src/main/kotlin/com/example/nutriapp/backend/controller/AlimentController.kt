@@ -24,8 +24,9 @@ class AlimentController(
     fun getById(@PathVariable id: Int) = service.getById(id)
 
     @PostMapping
-    fun create(@RequestBody dto: AlimentDTO) =
-        service.create(dto)
+    fun create(@RequestBody dto: AlimentDTO): AlimentDTO {
+        return service.create(dto)
+    }
 
     @PutMapping("/{id}")
     fun update(
