@@ -15,7 +15,7 @@ data class CompositionAlimentEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
+    val id: Int? = null,
 
     @Column(name = "amount_per100g")
     val amountPer100g: Double,

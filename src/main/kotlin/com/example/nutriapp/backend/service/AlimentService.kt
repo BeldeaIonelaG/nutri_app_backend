@@ -51,25 +51,33 @@ class AlimentService(
     fun update(id: Int, dto: AlimentDTO): AlimentDTO {
         val existing = alimentRepo.findById(id).orElseThrow()
 
-        val compositions = dto.nutrients.map {
+        // 🔴 CLEAR OLD COMPOSITIONS
+        existing.compositions.forEach { } // just to initialize
+        val updated = existing.copy(
+            name = dto.name,
+            description = dto.description,
+            type = dto.type,
+            updatedAt = System.currentTimeMillis(),
+            compositions = emptyList() // clear first
+        )
+
+        alimentRepo.save(updated)
+
+        // ✅ ADD NEW ONES
+        val newCompositions = dto.nutrients.map {
             CompositionAlimentEntity(
+                id = null,
                 amountPer100g = it.amountPer100g,
-                aliment = existing,
+                aliment = updated,
                 nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
             )
         }
 
-        val updated = alimentRepo.save(
-            existing.copy(
-                name = dto.name,
-                description = dto.description,
-                type = dto.type,
-                compositions = compositions,
-                updatedAt = System.currentTimeMillis()
-            )
+        val final = alimentRepo.save(
+            updated.copy(compositions = newCompositions)
         )
 
-        return updated.toDTO()
+        return final.toDTO()
     }
 
     fun delete(id: Int) {
