@@ -17,15 +17,15 @@ data class AlimentEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    val name: String,
+    var name: String,
 
-    val description: String,
+    var description: String,
 
-    val type: String,
+    var type: String,
 
     @OneToMany(mappedBy = "aliment", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val compositions: List<CompositionAlimentEntity> = emptyList(),
+    val compositions: MutableList<CompositionAlimentEntity> = mutableListOf(),
 
     @Column(name = "updated_at")
-    val updatedAt: Long = System.currentTimeMillis()
+    var updatedAt: Long = System.currentTimeMillis()
 )

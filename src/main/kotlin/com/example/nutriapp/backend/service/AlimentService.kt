@@ -28,56 +28,53 @@ class AlimentService(
             name = dto.name,
             description = dto.description,
             type = dto.type,
-            updatedAt = System.currentTimeMillis()
+            updatedAt = System.currentTimeMillis(),
+            compositions = mutableListOf() // ✅ important
         )
 
-        val saved = alimentRepo.save(aliment)
-
-        val compositions = dto.nutrients.map {
-            CompositionAlimentEntity(
+        // ✅ build compositions and attach to SAME instance
+        dto.nutrients.forEach {
+            val comp = CompositionAlimentEntity(
+                id = null,
                 amountPer100g = it.amountPer100g,
-                aliment = saved,
+                aliment = aliment,
                 nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
             )
+            aliment.compositions.add(comp)
         }
 
-        val updated = alimentRepo.save(
-            saved.copy(compositions = compositions)
-        )
+        // ✅ single save
+        val saved = alimentRepo.save(aliment)
 
-        return updated.toDTO()
+        return saved.toDTO()
     }
 
     fun update(id: Int, dto: AlimentDTO): AlimentDTO {
         val existing = alimentRepo.findById(id).orElseThrow()
 
-        // 🔴 CLEAR OLD COMPOSITIONS
-        existing.compositions.forEach { } // just to initialize
-        val updated = existing.copy(
-            name = dto.name,
-            description = dto.description,
-            type = dto.type,
-            updatedAt = System.currentTimeMillis(),
-            compositions = emptyList() // clear first
-        )
+        // ✅ update fields directly
+        existing.name = dto.name
+        existing.description = dto.description
+        existing.type = dto.type
+        existing.updatedAt = System.currentTimeMillis()
 
-        alimentRepo.save(updated)
+        // ✅ clear old compositions
+        existing.compositions.clear()
 
-        // ✅ ADD NEW ONES
-        val newCompositions = dto.nutrients.map {
-            CompositionAlimentEntity(
+        // ✅ add new ones
+        dto.nutrients.forEach {
+            val comp = CompositionAlimentEntity(
                 id = null,
                 amountPer100g = it.amountPer100g,
-                aliment = updated,
+                aliment = existing,
                 nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
             )
+            existing.compositions.add(comp)
         }
 
-        val final = alimentRepo.save(
-            updated.copy(compositions = newCompositions)
-        )
+        val saved = alimentRepo.save(existing)
 
-        return final.toDTO()
+        return saved.toDTO()
     }
 
     fun delete(id: Int) {
