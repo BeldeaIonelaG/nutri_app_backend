@@ -114,11 +114,13 @@ class SecurityConfig(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // ✅ important
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").permitAll()   // ✅ allow login/signup
-                    .anyRequest().authenticated()              // 🔒 everything else protected
+                    .requestMatchers("/auth/**").permitAll()
+                    .anyRequest().authenticated()
             }
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java) // ✅ ADD THIS
 
         return http.build()
     }
