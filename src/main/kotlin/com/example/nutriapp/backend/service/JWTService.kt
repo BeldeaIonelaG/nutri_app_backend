@@ -73,7 +73,7 @@ class JwtAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-
+        println("PATH: ${request.requestURI}")
         val path = request.requestURI
 
         // ✅ VERY IMPORTANT
