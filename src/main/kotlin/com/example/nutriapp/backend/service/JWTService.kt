@@ -119,4 +119,17 @@ class SecurityConfig(
 
         return http.build()
     }
+
+    @Bean
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http
+            .csrf { it.disable() }
+            .authorizeHttpRequests {
+                it
+                    .requestMatchers("/auth/**").permitAll()   // ✅ allow login/signup
+                    .anyRequest().authenticated()              // 🔒 everything else protected
+            }
+
+        return http.build()
+    }
 }
