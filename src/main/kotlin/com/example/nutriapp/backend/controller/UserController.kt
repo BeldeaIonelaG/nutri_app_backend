@@ -1,6 +1,7 @@
 package com.example.nutriapp.backend.controller
 
 import com.example.nutriapp.backend.dto.AuthRequest
+import com.example.nutriapp.backend.dto.AuthResponse
 import com.example.nutriapp.backend.service.AuthService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,7 +18,10 @@ class AuthController(
     fun signup(@RequestBody req: AuthRequest) =
         authService.signup(req)
 
+
     @PostMapping("/login")
-    fun login(@RequestBody req: AuthRequest) =
-        authService.login(req)
+    fun login(@RequestBody req: AuthRequest): AuthResponse {
+        println("LOGIN ENDPOINT HIT") // 👈 IMPORTANT
+        return authService.login(req)
+    }
 }
