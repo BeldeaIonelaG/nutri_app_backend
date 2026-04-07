@@ -77,7 +77,7 @@ class JwtAuthFilter(
         val path = request.requestURI
 
         // ✅ VERY IMPORTANT
-        if (path.startsWith("/auth")) {
+        if (path.contains("/auth"))  {
             filterChain.doFilter(request, response)
             return
         }
