@@ -103,24 +103,6 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-
-        http
-            .csrf { it.disable() }
-            .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .authorizeHttpRequests {
-                it
-                    .requestMatchers("/auth/**").permitAll()
-                    .anyRequest().authenticated()
-            }
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-
-        return http.build()
-    }
-
-    @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
