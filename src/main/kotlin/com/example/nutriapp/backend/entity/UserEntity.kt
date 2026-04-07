@@ -19,5 +19,5 @@ class UserEntity(
     var email: String,
 
     @Column(name = "password_hash")
-    var passwordHash: String
+    var passwordHash: String?
 )

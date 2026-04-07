@@ -15,15 +15,19 @@ class AuthService(
 
     fun signup(req: AuthRequest): AuthResponse {
 
-        if (userRepo.findByEmail(req.email) != null) {
+        val username = req.username ?: throw RuntimeException("Username required")
+        val email = req.email ?: throw RuntimeException("Email required")
+        val password = req.password ?: throw RuntimeException("Password required")
+
+        if (userRepo.findByEmail(email) != null) {
             throw RuntimeException("Email already exists")
         }
 
         val user = userRepo.save(
             UserEntity(
-                username = req.username!!,
-                email = req.email,
-                passwordHash = passwordService.hash(req.password)
+                username = username,
+                email = email,
+                passwordHash = passwordService.hash(password)
             )
         )
 
@@ -37,10 +41,13 @@ class AuthService(
 
     fun login(req: AuthRequest): AuthResponse {
 
-        val user = userRepo.findByEmail(req.email)
+        val email = req.email ?: throw RuntimeException("Email required")
+        val password = req.password ?: throw RuntimeException("Password required")
+
+        val user = userRepo.findByEmail(email)
             ?: throw RuntimeException("User not found")
 
-        if (!passwordService.verify(req.password, user.passwordHash)) {
+        if (!passwordService.verify(password, user.passwordHash)) {
             throw RuntimeException("Invalid password")
         }
 
