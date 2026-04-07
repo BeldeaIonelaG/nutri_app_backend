@@ -112,16 +112,15 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
+        return http
             .csrf { it.disable() }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // ✅ important
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll()   // ✅ login allowed
                     .anyRequest().authenticated()
             }
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java) // ✅ ADD THIS
-
-        return http.build()
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .build()
     }
 }
