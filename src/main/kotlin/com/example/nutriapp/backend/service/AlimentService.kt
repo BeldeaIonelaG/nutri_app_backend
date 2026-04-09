@@ -13,7 +13,6 @@ class AlimentService(
     private val alimentRepo: AlimentRepository,
     private val nutrientRepo: NutrientRepository
 ) {
-
     fun getAll(): List<AlimentDTO> =
         alimentRepo.findAll().map { it.toDTO() }
 
@@ -23,7 +22,6 @@ class AlimentService(
             .toDTO()
 
     fun create(dto: AlimentDTO): AlimentDTO {
-
         val aliment = AlimentEntity(
             name = dto.name,
             description = dto.description,
@@ -31,8 +29,7 @@ class AlimentService(
             updatedAt = System.currentTimeMillis(),
             compositions = mutableListOf() // ✅ important
         )
-
-        // ✅ build compositions and attach to SAME instance
+// ✅ build compositions and attach to SAME instance
         dto.nutrients.forEach {
             val comp = CompositionAlimentEntity(
                 id = null,
@@ -42,26 +39,21 @@ class AlimentService(
             )
             aliment.compositions.add(comp)
         }
-
-        // ✅ single save
+// ✅ single save
         val saved = alimentRepo.save(aliment)
-
         return saved.toDTO()
     }
 
     fun update(id: Int, dto: AlimentDTO): AlimentDTO {
         val existing = alimentRepo.findById(id).orElseThrow()
-
-        // ✅ update fields directly
+// ✅ update fields directly
         existing.name = dto.name
         existing.description = dto.description
         existing.type = dto.type
         existing.updatedAt = System.currentTimeMillis()
-
-        // ✅ clear old compositions
+// ✅ clear old compositions
         existing.compositions.clear()
-
-        // ✅ add new ones
+// ✅ add new ones
         dto.nutrients.forEach {
             val comp = CompositionAlimentEntity(
                 id = null,
@@ -71,9 +63,7 @@ class AlimentService(
             )
             existing.compositions.add(comp)
         }
-
         val saved = alimentRepo.save(existing)
-
         return saved.toDTO()
     }
 
