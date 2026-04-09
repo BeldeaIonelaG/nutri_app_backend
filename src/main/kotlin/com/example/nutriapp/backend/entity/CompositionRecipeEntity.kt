@@ -28,11 +28,18 @@ data class CompositionRecipeEntity(
     val amountPer100g: Double,
 
     @ManyToOne
-    @MapsId("idRecipe")
-    @JoinColumn(name = "id_recipe")
+    @JoinColumn(
+        name = "id_recipe",
+        insertable = false,
+        updatable = false
+    )
     val recipe: RecipeEntity,
 
     @ManyToOne
-    @JoinColumn(name = "id_nutrient")
+    @JoinColumn(
+        name = "id_nutrient",
+        insertable = false,  // 🔥 FIX
+        updatable = false    // 🔥 FIX
+    )
     val nutrient: NutrientEntity
 )
