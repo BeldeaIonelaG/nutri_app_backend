@@ -47,6 +47,8 @@ class JwtService {
             .parseClaimsJws(token)
             .body
 
+        println("✅ JWT PARSED - subject: ${claims.subject}, email: ${claims["email"]}")
+
         return claims.subject.toInt()
     }
 
@@ -56,12 +58,16 @@ class JwtService {
                 .setSigningKey(secret.toByteArray())
                 .build()
                 .parseClaimsJws(token)
+
+            println("✅ TOKEN VALID")
             true
         } catch (e: Exception) {
+            println("❌ TOKEN INVALID: ${e.message}")
             false
         }
     }
 }
+
 
 @Component
 class JwtAuthFilter(
@@ -73,32 +79,66 @@ class JwtAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        println("PATH: ${request.requestURI}")
-        val path = request.requestURI
 
-        // ✅ VERY IMPORTANT
-        if (path.contains("/auth"))  {
+        val path = request.requestURI
+        val header = request.getHeader("Authorization")
+
+        println("\n================ JWT FILTER ================")
+        println("📍 PATH: $path")
+        println("📍 AUTH HEADER: $header")
+
+        // ✅ Skip auth endpoints
+        if (path.startsWith("/auth")) {
+            println("➡️ Skipping auth endpoint")
             filterChain.doFilter(request, response)
             return
         }
 
-        val header = request.getHeader("Authorization")
-
-        if (header != null && header.startsWith("Bearer ")) {
-            val token = header.substring(7)
-
-            if (jwtService.isValid(token)) {
-                val userId = jwtService.extractUserId(token)
-
-                val auth = UsernamePasswordAuthenticationToken(
-                    userId,
-                    null,
-                    emptyList()
-                )
-
-                SecurityContextHolder.getContext().authentication = auth
-            }
+        if (header == null) {
+            println("❌ NO AUTH HEADER → request will be UNAUTHORIZED")
+            filterChain.doFilter(request, response)
+            return
         }
+
+        if (!header.startsWith("Bearer ")) {
+            println("❌ INVALID HEADER FORMAT")
+            filterChain.doFilter(request, response)
+            return
+        }
+
+        val token = header.substring(7)
+        println("✅ TOKEN EXTRACTED: $token")
+
+        if (!jwtService.isValid(token)) {
+            println("❌ TOKEN FAILED VALIDATION")
+            filterChain.doFilter(request, response)
+            return
+        }
+
+        val userId = jwtService.extractUserId(token)
+        println("✅ USER ID FROM TOKEN: $userId")
+
+        val currentAuth = SecurityContextHolder.getContext().authentication
+        println("📍 EXISTING AUTH: $currentAuth")
+
+        if (currentAuth == null) {
+
+            val auth = UsernamePasswordAuthenticationToken(
+                userId,
+                null,
+                emptyList() // ⚠️ IMPORTANT: no roles
+            )
+
+            println("🔥 SETTING AUTHENTICATION FOR USER: $userId")
+
+            SecurityContextHolder.getContext().authentication = auth
+
+        } else {
+            println("⚠️ AUTH ALREADY EXISTS, SKIPPING")
+        }
+
+        println("📍 FINAL AUTH: ${SecurityContextHolder.getContext().authentication}")
+        println("===========================================\n")
 
         filterChain.doFilter(request, response)
     }
@@ -112,12 +152,15 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+
+        println("🚨 SECURITY CONFIG INITIALIZED")
+
         return http
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").permitAll()   // ✅ login allowed
+                    .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
