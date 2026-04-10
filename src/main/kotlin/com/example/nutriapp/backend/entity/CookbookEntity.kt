@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.time.LocalDate
 
 @Entity
 @Table(name = "cookbooks")
@@ -16,7 +17,7 @@ data class CookbookEntity(
     val id: Int = 0,
 
     @Column(name = "creation_date")
-    var creationDate: Long,
+    var creationDate: LocalDate?,
 
     var description: String,
 

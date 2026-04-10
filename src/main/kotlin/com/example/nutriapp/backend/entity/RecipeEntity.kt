@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 import jakarta.persistence.Column
+import java.time.LocalDate
 
 @Entity
 @Table(name = "recipes")
@@ -19,7 +20,7 @@ class RecipeEntity(
     val id: Int = 0,
 
     @Column(name = "creation_date")
-    var creationDate: Long = System.currentTimeMillis(),
+    var creationDate: LocalDate?,
 
     var description: String?,
 

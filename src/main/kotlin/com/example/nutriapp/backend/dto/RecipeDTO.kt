@@ -1,5 +1,7 @@
 package com.example.nutriapp.backend.dto
 
+import java.time.LocalDate
+
 data class CompositionRecipeDTO(
     val idNutrient: Int,
     val amountPer100g: Double
@@ -21,7 +23,7 @@ data class RecipeDTO(
     val difficultyLevel: Int?,
     val typeM: String?,
 
-    val creationDate: Long,
+    val creationDate: LocalDate?,
     val idCookbook: Int?,
     val idCreator: Int?,
     val idInitialCreator: Int?,
