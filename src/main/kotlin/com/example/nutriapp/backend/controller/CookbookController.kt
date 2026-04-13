@@ -1,7 +1,9 @@
 package com.example.nutriapp.backend.controller
 
 import com.example.nutriapp.backend.dto.CookbookDTO
+import com.example.nutriapp.backend.entity.CookbookEntity
 import com.example.nutriapp.backend.service.CookbookService
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -36,4 +38,16 @@ class CookbookController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Int) =
         service.delete(id)
+
+    @GetMapping
+    fun getMyCookbooks(): List<CookbookEntity> {
+
+        val auth = SecurityContextHolder.getContext().authentication
+
+        val userId = (auth?.principal ?: 0) as Int
+
+        println("👤 CURRENT USER ID: $userId")
+
+        return service.getByUser(userId)
+    }
 }

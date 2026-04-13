@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -126,7 +127,7 @@ class JwtAuthFilter(
             val auth = UsernamePasswordAuthenticationToken(
                 userId,
                 null,
-                emptyList() // ⚠️ IMPORTANT: no roles
+                listOf(SimpleGrantedAuthority("ROLE_USER"))// ⚠️ IMPORTANT: initially no roles, now has basic user role
             )
 
             println("🔥 SETTING AUTHENTICATION FOR USER: $userId")

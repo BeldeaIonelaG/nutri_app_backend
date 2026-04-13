@@ -49,4 +49,8 @@ class CookbookService(
     fun delete(id: Int) {
         repo.deleteById(id)
     }
+
+    fun getByUser(userId: Int): List<CookbookEntity> {
+        return repo.findByIdCreator(userId)
+    }
 }
