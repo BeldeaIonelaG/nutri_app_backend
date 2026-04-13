@@ -19,9 +19,6 @@ class CookbookController(
     private val service: CookbookService
 ) {
 
-    @GetMapping
-    fun getAll() = service.getAll()
-
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Int) = service.getById(id)
 
