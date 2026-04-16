@@ -12,7 +12,7 @@ fun IntakeEntity.toDTO(): IntakeDTO =
         foodId = foodId,
         quantity = quantity,
         measurementUnit = measurementUnit,
-        dateTime = dateTime,
+        dateTime = dateTime.toString(),
         userId = userId,
         nutrients = nutrients.map { it.toDTO() }
     )
