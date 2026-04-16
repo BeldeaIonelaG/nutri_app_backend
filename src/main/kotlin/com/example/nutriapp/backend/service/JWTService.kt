@@ -127,7 +127,7 @@ class JwtAuthFilter(
             val auth = UsernamePasswordAuthenticationToken(
                 userId,
                 null,
-                listOf(SimpleGrantedAuthority("USER"))// ⚠️ IMPORTANT: initially no roles, now has basic user role
+                listOf(SimpleGrantedAuthority("ROLE_USER"))// ⚠️ IMPORTANT: initially no roles, now has basic user role
             )
 
             println("🔥 SETTING AUTHENTICATION FOR USER: $userId")
@@ -162,6 +162,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/recipes/**").hasRole("USER")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
