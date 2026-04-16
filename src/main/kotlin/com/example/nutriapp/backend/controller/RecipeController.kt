@@ -30,7 +30,7 @@ class RecipeController(
             .getContext()
             .authentication
             ?.principal ?: 0) as Int
-        return service.create(dto,)
+        return service.create(dto,userId)
     }
 
     @PutMapping("/{id}")

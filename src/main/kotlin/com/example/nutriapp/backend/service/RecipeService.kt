@@ -46,6 +46,7 @@ class RecipeService(
             compositions = mutableListOf(),
             ingredients = mutableListOf()
         )
+
         if(recipe.idInitialCreator == null)
         {
             recipe.idInitialCreator = userId
