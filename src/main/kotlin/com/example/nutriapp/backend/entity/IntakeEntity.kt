@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "intake")
@@ -18,7 +19,7 @@ class IntakeEntity(
     val id: Int = 0,
 
     @Column(name = "date_time")
-    var dateTime: String,
+    var dateTime: LocalDateTime,
 
     @Column(name = "food_id")
     var foodId: Int,
