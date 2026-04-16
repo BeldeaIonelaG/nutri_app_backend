@@ -24,7 +24,7 @@ class RecipeService(
     fun getById(id: Int): RecipeDTO =
         recipeRepo.findById(id).orElseThrow().toDTO()
 
-    fun create(dto: RecipeDTO): RecipeDTO {
+    fun create(dto: RecipeDTO, userId: Int): RecipeDTO {
 
         val recipe = RecipeEntity(
             name = dto.name,
@@ -37,7 +37,7 @@ class RecipeService(
             // 🔥 NOW INCLUDED
             creationDate = dto.creationDate,
             idCookbook = dto.idCookbook,
-            idCreator = dto.idCreator,
+            idCreator = userId,
             idInitialCreator = dto.idInitialCreator,
             previousRecipeId = dto.previousRecipeId,
 
@@ -46,6 +46,10 @@ class RecipeService(
             compositions = mutableListOf(),
             ingredients = mutableListOf()
         )
+        if(recipe.idInitialCreator == null)
+        {
+            recipe.idInitialCreator = userId
+        }
 
         val saved = recipeRepo.save(recipe)
 
