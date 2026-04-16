@@ -7,6 +7,7 @@ import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.IntakeRepository
 import com.example.nutriapp.backend.repository.NutrientIntakeRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class IntakeService(
@@ -20,7 +21,7 @@ class IntakeService(
     fun create(dto: IntakeDTO, userId: Int): IntakeDTO {
 
         val intake = IntakeEntity(
-            dateTime = dto.dateTime,
+            dateTime = LocalDateTime.parse(dto.dateTime),
             foodId = dto.foodId,
             foodType = dto.foodType,
             measurementUnit = dto.measurementUnit,
