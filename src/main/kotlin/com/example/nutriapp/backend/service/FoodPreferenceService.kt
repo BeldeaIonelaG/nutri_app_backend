@@ -1,4 +1,4 @@
-package com.example.nutriapp.backend.controller
+package com.example.nutriapp.backend.service
 
 import com.example.nutriapp.backend.dto.FoodPreferenceDTO
 import com.example.nutriapp.backend.mappers.toDTO

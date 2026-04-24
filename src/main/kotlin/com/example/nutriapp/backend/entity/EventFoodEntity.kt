@@ -9,22 +9,20 @@ import jakarta.persistence.MapsId
 import jakarta.persistence.Table
 
 @Embeddable
-data class EventInvitationId(
-    val eventId: Int = 0,
-    val personId: Int = 0
+data class EventFoodId(
+    val idEvent: Int = 0,
+    val idPost: Int = 0
 )
 
 @Entity
-@Table(name = "event_invitation")
-class EventInvitationEntity(
+@Table(name = "event_food")
+class EventFoodEntity(
 
     @EmbeddedId
-    val id: EventInvitationId,
-
-    var status: String,
+    val id: EventFoodId,
 
     @ManyToOne
-    @MapsId("eventId")
-    @JoinColumn(name = "event_id")
+    @MapsId("idEvent")
+    @JoinColumn(name = "id_event")
     var event: EventEntity
 )

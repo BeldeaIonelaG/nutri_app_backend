@@ -6,21 +6,22 @@ import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Table
 
-data class AllergyId(
+data class DailyNeedId(
     val userId: Int = 0,
-    val alimentId: Int = 0
+    val nutrientId: Int = 0
 )
-
 @Entity
-@IdClass(AllergyId::class)
-@Table(name = "allergy")
-data class AllergyEntity(
+@IdClass(DailyNeedId::class)
+@Table(name = "daily_needs")
+data class DailyNeedEntity(
 
     @Id
     @Column(name = "user_id")
     val userId: Int,
 
     @Id
-    @Column(name = "aliment_id")
-    val alimentId: Int
+    @Column(name = "nutrient_id")
+    val nutrientId: Int,
+
+    val quantity: Double
 )

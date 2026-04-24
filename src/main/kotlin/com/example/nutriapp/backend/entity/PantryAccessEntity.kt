@@ -8,13 +8,15 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "pantry")
-data class PantryEntity(
+@Table(name = "pantry_access")
+data class PantryAccessEntity(
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    val name: String,
+    @Column(name = "user_id")
+    val userId: Int,
 
-    @Column(name = "owner_id")
-    val ownerId: Int
+    @Column(name = "pantry_id")
+    val pantryId: Int
 )
