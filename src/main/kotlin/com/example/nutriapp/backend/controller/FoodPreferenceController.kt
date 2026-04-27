@@ -4,24 +4,31 @@ import com.example.nutriapp.backend.dto.FoodPreferenceDTO
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.mappers.toEntity
 import com.example.nutriapp.backend.repository.FoodPreferenceRepository
+import com.example.nutriapp.backend.service.FoodPreferenceService
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-@Service
-class FoodPreferenceService(
-    private val repo: FoodPreferenceRepository
+@RestController
+@RequestMapping("/preferences")
+class FoodPreferenceController(
+    private val service: FoodPreferenceService
 ) {
 
-    fun getByUser(userId: Int): List<FoodPreferenceDTO> =
-        repo.findByUserId(userId).map { it.toDTO() }
+    @GetMapping("/{userId}")
+    fun getByUser(@PathVariable userId: Int) =
+        service.getByUser(userId)
 
-    fun add(dto: FoodPreferenceDTO): FoodPreferenceDTO =
-        repo.save(dto.toEntity()).toDTO()
+    @PostMapping
+    fun add(@RequestBody dto: FoodPreferenceDTO) =
+        service.add(dto)
 
-    fun remove(dto: FoodPreferenceDTO) {
-        repo.deleteByUserIdAndTargetTypeAndTargetId(
-            dto.userId,
-            dto.targetType,
-            dto.targetId
-        )
-    }
+    @DeleteMapping
+    fun remove(@RequestBody dto: FoodPreferenceDTO) =
+        service.remove(dto)
 }
