@@ -162,7 +162,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/recipes/**").hasRole("USER")
+                    .requestMatchers("/**").hasRole("USER")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
