@@ -1,51 +1,42 @@
 package com.example.nutriapp.backend.controller
 
 import com.example.nutriapp.backend.dto.EventDTO
-import com.example.nutriapp.backend.entity.EventFoodEntity
-import com.example.nutriapp.backend.entity.EventFoodId
-import com.example.nutriapp.backend.entity.EventInvitationEntity
-import com.example.nutriapp.backend.entity.EventInvitationId
-import com.example.nutriapp.backend.mappers.toDTO
-import com.example.nutriapp.backend.mappers.toEntity
-import com.example.nutriapp.backend.repository.EventFoodRepository
-import com.example.nutriapp.backend.repository.EventInvitationRepository
-import com.example.nutriapp.backend.repository.EventRepository
-import org.springframework.stereotype.Service
+import com.example.nutriapp.backend.service.EventService
+import org.springframework.security.core.Authentication
 
-@Service
-class EventService(
-    private val eventRepo: EventRepository,
-    private val invitationRepo: EventInvitationRepository,
-    private val foodRepo: EventFoodRepository
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+
+@RestController
+@RequestMapping("/events")
+class EventController(
+    private val service: EventService
 ) {
 
-    fun getAll(userId: Int): List<EventDTO> =
-        eventRepo.findAll().map { it.toDTO() }
+    @GetMapping
+    fun getAll(authentication: Authentication): List<EventDTO> {
+        val userId = authentication.principal.toString().toInt()
 
-    fun create(dto: EventDTO, userId: Int): EventDTO {
+        println("📥 GET /events by user=$userId")
 
-        val event = dto.toEntity(userId)
-        val saved = eventRepo.save(event)
+        return service.getAll(userId)
+    }
 
-        // invitations
-        dto.invitations.forEach {
-            val inv = EventInvitationEntity(
-                id = EventInvitationId(saved.id, it.personId),
-                status = it.status,
-                event = saved
-            )
-            invitationRepo.save(inv)
-        }
+    @PostMapping
+    fun create(
+        @RequestBody dto: EventDTO,
+        authentication: Authentication
+    ): EventDTO {
 
-        // foods
-        dto.foods.forEach { postId ->
-            val food = EventFoodEntity(
-                id = EventFoodId(saved.id, postId),
-                event = saved
-            )
-            foodRepo.save(food)
-        }
+        val userId = authentication.principal.toString().toInt()
 
-        return eventRepo.findById(saved.id).get().toDTO()
+        println("📤 POST /events by user=$userId")
+        println("➡️ DTO: $dto")
+
+        return service.create(dto, userId)
     }
 }
