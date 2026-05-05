@@ -3,6 +3,7 @@ package com.example.nutriapp.backend.service
 import com.example.nutriapp.backend.dto.IntakeDTO
 import com.example.nutriapp.backend.entity.IntakeEntity
 import com.example.nutriapp.backend.entity.NutrientIntakeEntity
+import com.example.nutriapp.backend.entity.NutrientIntakeKey
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.IntakeRepository
 import com.example.nutriapp.backend.repository.NutrientIntakeRepository
@@ -33,10 +34,14 @@ class IntakeService(
 
         dto.nutrients.forEach {
             val nutrient = NutrientIntakeEntity(
-                intakeId = saved.id,
-                nutrientId = it.nutrientId,
-                quantity = it.quantity
+                id = NutrientIntakeKey(
+                    intakeId = intake.id,
+                    nutrientId = it.nutrientId
+                ),
+                quantity = it.quantity,
+                intake = intake
             )
+
             nutrientRepo.save(nutrient)
         }
 
