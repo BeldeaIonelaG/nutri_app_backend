@@ -19,6 +19,6 @@ fun IntakeEntity.toDTO(): IntakeDTO =
 
 fun NutrientIntakeEntity.toDTO(): NutrientIntakeDTO =
     NutrientIntakeDTO(
-        nutrientId = nutrientId,
+        nutrientId = id.nutrientId,
         quantity = quantity
     )
