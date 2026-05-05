@@ -5,17 +5,22 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.IdClass
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.io.Serializable
+
+data class NutrientIntakeId(
+    val intakeId: Int = 0,
+    val nutrientId: Int = 0
+) : Serializable
 
 @Entity
 @Table(name = "nutrient_intake")
+@IdClass(NutrientIntakeId::class)
 class NutrientIntakeEntity(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
 
     @Column(name = "intake_id")
     var intakeId: Int,
@@ -24,9 +29,6 @@ class NutrientIntakeEntity(
     var nutrientId: Int,
 
     var quantity: Double,
-
-    @Column(name = "user_id")
-    var userId: Int,
 
     @ManyToOne
     @JoinColumn(name = "intake_id", insertable = false, updatable = false)

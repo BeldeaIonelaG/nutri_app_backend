@@ -35,8 +35,7 @@ class IntakeService(
             val nutrient = NutrientIntakeEntity(
                 intakeId = saved.id,
                 nutrientId = it.nutrientId,
-                quantity = it.quantity,
-                userId = userId
+                quantity = it.quantity
             )
             nutrientRepo.save(nutrient)
         }
