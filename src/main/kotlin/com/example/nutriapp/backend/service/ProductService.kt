@@ -2,9 +2,11 @@ package com.example.nutriapp.backend.service
 
 import com.example.nutriapp.backend.dto.ProductDTO
 import com.example.nutriapp.backend.entity.CompositionProductEntity
+import com.example.nutriapp.backend.entity.CompositionProductKey
 import com.example.nutriapp.backend.entity.ProductBarcodeEntity
 import com.example.nutriapp.backend.entity.ProductEntity
 import com.example.nutriapp.backend.entity.ProductIngredientEntity
+import com.example.nutriapp.backend.entity.ProductIngredientKey
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.AlimentRepository
 import com.example.nutriapp.backend.repository.NutrientRepository
@@ -31,10 +33,13 @@ class ProductService(
             type = dto.type
         )
 
+        val saved = repo.save(product)
+
         // compositions
         dto.nutrients.forEach {
             product.compositions.add(
                 CompositionProductEntity(
+                    id = CompositionProductKey(saved.id,it.idNutrient),
                     amountPer100g = it.amountPer100g,
                     product = product,
                     nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
@@ -46,6 +51,7 @@ class ProductService(
         dto.ingredients.forEach {
             product.ingredients.add(
                 ProductIngredientEntity(
+                    id = ProductIngredientKey(saved.id,it.idAliment),
                     quantity = it.quantity,
                     measurementUnit = it.measurementUnit,
                     product = product,
@@ -76,6 +82,7 @@ class ProductService(
         dto.nutrients.forEach {
             product.compositions.add(
                 CompositionProductEntity(
+                    id = CompositionProductKey(product.id, it.idNutrient),
                     amountPer100g = it.amountPer100g,
                     product = product,
                     nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
@@ -86,6 +93,7 @@ class ProductService(
         dto.ingredients.forEach {
             product.ingredients.add(
                 ProductIngredientEntity(
+                    id = ProductIngredientKey(product.id, it.idAliment),
                     quantity = it.quantity,
                     measurementUnit = it.measurementUnit,
                     product = product,

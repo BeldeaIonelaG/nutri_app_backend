@@ -17,7 +17,6 @@ fun AlimentEntity.toDTO(): AlimentDTO =
 
 fun CompositionAlimentEntity.toDTO(): CompositionAlimentDTO =
     CompositionAlimentDTO(
-        id = id,
         idNutrient = nutrient.id,
         amountPer100g = amountPer100g
     )

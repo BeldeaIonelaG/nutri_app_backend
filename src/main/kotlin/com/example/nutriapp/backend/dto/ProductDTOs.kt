@@ -11,13 +11,11 @@ data class ProductDTO(
 )
 
 data class CompositionProductDTO(
-    val id: Int?,
     val idNutrient: Int,
     val amountPer100g: Double
 )
 
 data class ProductIngredientDTO(
-    val id: Int?,
     val idAliment: Int,
     val quantity: Double,
     val measurementUnit: String

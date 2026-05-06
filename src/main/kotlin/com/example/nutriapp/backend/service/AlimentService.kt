@@ -3,6 +3,7 @@ package com.example.nutriapp.backend.service
 import com.example.nutriapp.backend.dto.AlimentDTO
 import com.example.nutriapp.backend.entity.AlimentEntity
 import com.example.nutriapp.backend.entity.CompositionAlimentEntity
+import com.example.nutriapp.backend.entity.CompositionAlimentKey
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.AlimentRepository
 import com.example.nutriapp.backend.repository.NutrientRepository
@@ -29,19 +30,19 @@ class AlimentService(
             updatedAt = System.currentTimeMillis(),
             compositions = mutableListOf() // ✅ important
         )
-// ✅ build compositions and attach to SAME instance
+        val saved = alimentRepo.save(aliment)
+
         dto.nutrients.forEach {
             val comp = CompositionAlimentEntity(
-                id = null,
+                id = CompositionAlimentKey(saved.id,it.idNutrient),
                 amountPer100g = it.amountPer100g,
                 aliment = aliment,
                 nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()
             )
             aliment.compositions.add(comp)
         }
-// ✅ single save
-        val saved = alimentRepo.save(aliment)
-        return saved.toDTO()
+
+        return alimentRepo.save(saved).toDTO()
     }
 
     fun update(id: Int, dto: AlimentDTO): AlimentDTO {
@@ -56,7 +57,7 @@ class AlimentService(
 // ✅ add new ones
         dto.nutrients.forEach {
             val comp = CompositionAlimentEntity(
-                id = null,
+                id = CompositionAlimentKey(existing.id,it.idNutrient),
                 amountPer100g = it.amountPer100g,
                 aliment = existing,
                 nutrient = nutrientRepo.findById(it.idNutrient).orElseThrow()

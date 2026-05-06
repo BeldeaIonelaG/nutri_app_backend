@@ -1,7 +1,6 @@
 package com.example.nutriapp.backend.dto
 
 data class CompositionAlimentDTO(
-    val id: Int?,
     val idNutrient: Int,
     val amountPer100g: Double
 )

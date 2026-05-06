@@ -12,14 +12,12 @@ fun ProductEntity.toDTO() = ProductDTO(
     type = type,
     nutrients = compositions.map {
         CompositionProductDTO(
-            id = it.id,
             idNutrient = it.nutrient.id,
             amountPer100g = it.amountPer100g
         )
     },
     ingredients = ingredients.map {
         ProductIngredientDTO(
-            id = it.id,
             idAliment = it.aliment.id,
             quantity = it.quantity,
             measurementUnit = it.measurementUnit
