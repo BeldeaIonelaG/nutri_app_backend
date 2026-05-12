@@ -41,6 +41,5 @@ fun IngredientEntity.toDTO(): IngredientDTO =
     IngredientDTO(
         targetId = id.targetId,
         targetType = id.targetType,
-        quantity = quantity,
-        measurementUnit = measurementUnit
+        quantity = quantity
     )

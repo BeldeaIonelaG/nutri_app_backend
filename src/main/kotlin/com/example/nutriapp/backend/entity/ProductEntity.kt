@@ -19,6 +19,8 @@ class ProductEntity(
     var name: String,
     var description: String,
     var type: String,
+    var quantity: Double,
+    var measurementUnit: String,
 
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
     var compositions: MutableList<CompositionProductEntity> = mutableListOf(),

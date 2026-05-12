@@ -30,7 +30,9 @@ class ProductService(
         val product = ProductEntity(
             name = dto.name,
             description = dto.description,
-            type = dto.type
+            type = dto.type,
+            quantity = dto.quantity,
+            measurementUnit = dto.measurementUnit,
         )
 
         val saved = repo.save(product)
@@ -53,7 +55,6 @@ class ProductService(
                 ProductIngredientEntity(
                     id = ProductIngredientKey(saved.id,it.idAliment),
                     quantity = it.quantity,
-                    measurementUnit = it.measurementUnit,
                     product = product,
                     aliment = alimentRepo.findById(it.idAliment).orElseThrow()
                 )
@@ -95,7 +96,6 @@ class ProductService(
                 ProductIngredientEntity(
                     id = ProductIngredientKey(product.id, it.idAliment),
                     quantity = it.quantity,
-                    measurementUnit = it.measurementUnit,
                     product = product,
                     aliment = alimentRepo.findById(it.idAliment).orElseThrow()
                 )

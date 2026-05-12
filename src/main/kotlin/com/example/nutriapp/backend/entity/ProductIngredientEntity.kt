@@ -27,7 +27,6 @@ class ProductIngredientEntity(
     val id: ProductIngredientKey,
 
     val quantity: Double,
-    val measurementUnit: String,
 
     @ManyToOne
     @MapsId("productId")

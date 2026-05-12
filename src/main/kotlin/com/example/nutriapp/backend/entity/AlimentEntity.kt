@@ -22,6 +22,7 @@ data class AlimentEntity(
     var description: String,
 
     var type: String,
+    var measurementUnit: String,
 
     @OneToMany(mappedBy = "aliment", cascade = [CascadeType.ALL], orphanRemoval = true)
     val compositions: MutableList<CompositionAlimentEntity> = mutableListOf(),

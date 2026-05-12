@@ -28,7 +28,8 @@ class AlimentService(
             description = dto.description,
             type = dto.type,
             updatedAt = System.currentTimeMillis(),
-            compositions = mutableListOf() // ✅ important
+            compositions = mutableListOf(),
+            measurementUnit = dto.measurementUnit, // ✅ important
         )
         val saved = alimentRepo.save(aliment)
 

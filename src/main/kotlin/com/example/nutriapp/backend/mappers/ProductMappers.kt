@@ -10,6 +10,8 @@ fun ProductEntity.toDTO() = ProductDTO(
     name = name,
     description = description,
     type = type,
+    measurementUnit = measurementUnit,
+    quantity  = quantity,
     nutrients = compositions.map {
         CompositionProductDTO(
             idNutrient = it.nutrient.id,
@@ -19,8 +21,7 @@ fun ProductEntity.toDTO() = ProductDTO(
     ingredients = ingredients.map {
         ProductIngredientDTO(
             idAliment = it.aliment.id,
-            quantity = it.quantity,
-            measurementUnit = it.measurementUnit
+            quantity = it.quantity
         )
     },
     barcodes = barcodes.map { it.barcode }

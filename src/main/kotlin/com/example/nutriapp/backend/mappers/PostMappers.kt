@@ -12,7 +12,8 @@ fun SocialPostEntity.toDTO(): SocialPostDTO =
         dateTime = dateTime.toString(),
         description = description,
         visibility = visibility,
-        contents = contents.map { it.toDTO() }
+        contents = contents.map { it.toDTO() },
+        userId = userId
     )
 
 fun PostContentEntity.toDTO(): PostContentDTO =

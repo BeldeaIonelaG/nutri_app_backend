@@ -10,8 +10,7 @@ data class CompositionRecipeDTO(
 data class IngredientDTO(
     val targetId: Int,
     val targetType: String,
-    val quantity: Double?,
-    val measurementUnit: String?
+    val quantity: Double?
 )
 
 data class RecipeDTO(

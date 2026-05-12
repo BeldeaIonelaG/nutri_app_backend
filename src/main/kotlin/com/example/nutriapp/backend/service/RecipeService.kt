@@ -70,7 +70,6 @@ class RecipeService(
             val ing = IngredientEntity(
                 id = IngredientId(it.targetId, saved.id, it.targetType),
                 quantity = it.quantity,
-                measurementUnit = it.measurementUnit,
                 recipe = saved
             )
             saved.ingredients.add(ing)
@@ -116,7 +115,6 @@ class RecipeService(
             val ing = IngredientEntity(
                 id = IngredientId(it.targetId, existing.id, it.targetType),
                 quantity = it.quantity,
-                measurementUnit = it.measurementUnit,
                 recipe = existing
             )
             existing.ingredients.add(ing)

@@ -12,7 +12,8 @@ fun AlimentEntity.toDTO(): AlimentDTO =
         description = description,
         type = type,
         nutrients = compositions.map { it.toDTO() },
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+        measurementUnit = measurementUnit
     )
 
 fun CompositionAlimentEntity.toDTO(): CompositionAlimentDTO =

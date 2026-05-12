@@ -5,6 +5,7 @@ data class SocialPostDTO(
     val dateTime: String,
     val description: String,
     val visibility: String,
+    val userId: Int,
     val contents: List<PostContentDTO>
 )
 

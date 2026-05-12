@@ -5,6 +5,8 @@ data class ProductDTO(
     val name: String,
     val description: String,
     val type: String,
+    val measurementUnit: String,
+    val quantity: Double,
     val nutrients: List<CompositionProductDTO>,
     val ingredients: List<ProductIngredientDTO>,
     val barcodes: List<String>
@@ -17,6 +19,5 @@ data class CompositionProductDTO(
 
 data class ProductIngredientDTO(
     val idAliment: Int,
-    val quantity: Double,
-    val measurementUnit: String
+    val quantity: Double
 )

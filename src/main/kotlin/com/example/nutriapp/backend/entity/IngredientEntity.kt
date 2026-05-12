@@ -33,8 +33,6 @@ data class IngredientEntity(
 
     var quantity: Double?,
 
-    @Column(name = "measurement_unit")
-    var measurementUnit: String?,
 
     @ManyToOne
     @MapsId("idRecipe")
