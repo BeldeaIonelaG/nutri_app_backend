@@ -25,7 +25,7 @@ fun PantryItemEntity.toDTO(): PantryItemDTO =
         type = id.type,
         itemId = id.itemId,
         quantity = quantity,
-        expirationDate = id.expirationDate?.toString()
+        expirationDate = id.expirationDate.toString()
     )
 
 fun PantryDTO.toEntity(): PantryEntity =
