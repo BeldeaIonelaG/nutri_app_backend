@@ -5,6 +5,7 @@ import com.example.nutriapp.backend.dto.PantryItemDTO
 import com.example.nutriapp.backend.entity.PantryAccessEntity
 import com.example.nutriapp.backend.entity.PantryEntity
 import com.example.nutriapp.backend.entity.PantryItemEntity
+import com.example.nutriapp.backend.entity.PantryItemKey
 import java.time.LocalDate
 
 fun PantryEntity.toDTO(
@@ -16,17 +17,15 @@ fun PantryEntity.toDTO(
         name = name,
         ownerId = ownerId,
         items = items.map { it.toDTO() },
-        access = access.map { it.userId }
+        access = access.map { it.id.userId }
     )
 
 fun PantryItemEntity.toDTO(): PantryItemDTO =
     PantryItemDTO(
-        id = id,
-        type = type,
-        itemId = itemId,
+        type = id.type,
+        itemId = id.itemId,
         quantity = quantity,
-        measurementUnit = measurementUnit,
-        expirationDate = expirationDate?.toString()
+        expirationDate = id.expirationDate?.toString()
     )
 
 fun PantryDTO.toEntity(): PantryEntity =
@@ -36,13 +35,22 @@ fun PantryDTO.toEntity(): PantryEntity =
         ownerId = ownerId
     )
 
-fun PantryItemDTO.toEntity(pantryId: Int): PantryItemEntity =
+fun PantryItemDTO.toEntity(
+    pantry: PantryEntity
+): PantryItemEntity =
     PantryItemEntity(
-        id = id ?: 0,
-        pantryId = pantryId,
-        type = type,
-        itemId = itemId,
+
+        id = PantryItemKey(
+            pantryId = pantry.id,
+            itemId = itemId,
+            type = type,
+            expirationDate =
+                expirationDate?.let {
+                    LocalDate.parse(it)
+                }
+        ),
+
         quantity = quantity,
-        measurementUnit = measurementUnit,
-        expirationDate = expirationDate?.let { LocalDate.parse(it) }
+
+        pantry = pantry
     )

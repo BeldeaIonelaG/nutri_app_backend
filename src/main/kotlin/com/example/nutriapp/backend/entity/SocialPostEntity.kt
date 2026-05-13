@@ -28,6 +28,10 @@ class SocialPostEntity(
     @Column(name = "user_id")
     var userId: Int,
 
-    @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "post",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
     val contents: MutableList<PostContentEntity> = mutableListOf()
 )

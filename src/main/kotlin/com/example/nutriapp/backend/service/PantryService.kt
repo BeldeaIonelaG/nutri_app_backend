@@ -2,6 +2,7 @@ package com.example.nutriapp.backend.service
 
 import com.example.nutriapp.backend.dto.PantryDTO
 import com.example.nutriapp.backend.entity.PantryAccessEntity
+import com.example.nutriapp.backend.entity.PantryAccessKey
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.mappers.toEntity
 import com.example.nutriapp.backend.repository.PantryAccessRepository
@@ -22,28 +23,35 @@ class PantryService(
 
         val savedPantry = pantryRepo.save(dto.toEntity())
 
-        val items = dto.items.map {
-            itemRepo.save(it.toEntity(savedPantry.id))
-        }
+        dto.items.forEach {
 
+            savedPantry.items.add(
+                it.toEntity(savedPantry)
+            )
+        }
         val access = dto.access.map {
             accessRepo.save(
                 PantryAccessEntity(
-                    userId = it,
-                    pantryId = savedPantry.id
+                    id = PantryAccessKey(
+                        userId = it,
+                        pantryId = savedPantry.id
+                    )
                 )
             )
         }
 
-        return savedPantry.toDTO(items, access)
+        return savedPantry.toDTO(
+            savedPantry.items,
+            access
+        )
     }
 
     fun getByUser(userId: Int): List<PantryDTO> {
         val pantries = pantryRepo.findByOwnerId(userId)
 
         return pantries.map { pantry ->
-            val items = itemRepo.findByPantryId(pantry.id)
-            val access = accessRepo.findByPantryId(pantry.id)
+            val items = itemRepo.findByIdPantryId(pantry.id)
+            val access = accessRepo.findByIdPantryId(pantry.id)
 
             pantry.toDTO(items, access)
         }

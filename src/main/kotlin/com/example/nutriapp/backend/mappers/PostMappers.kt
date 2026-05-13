@@ -18,8 +18,8 @@ fun SocialPostEntity.toDTO(): SocialPostDTO =
 
 fun PostContentEntity.toDTO(): PostContentDTO =
     PostContentDTO(
-        referenceId = referenceId,
-        type = type
+        referenceId = id.referenceId,
+        type = id.type
     )
 
 fun SocialPostDTO.toEntity(userId: Int): SocialPostEntity =
