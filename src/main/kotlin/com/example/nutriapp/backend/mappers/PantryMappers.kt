@@ -42,12 +42,12 @@ fun PantryItemDTO.toEntity(
 
         id = PantryItemKey(
             pantryId = pantry.id,
-            itemId = itemId,
+            itemId = itemId ?: 0,
             type = type,
             expirationDate =
-                expirationDate?.let {
+                expirationDate.let {
                     LocalDate.parse(it)
-                }
+                } ?: LocalDate.now()
         ),
 
         quantity = quantity,

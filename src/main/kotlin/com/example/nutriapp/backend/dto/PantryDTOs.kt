@@ -10,7 +10,7 @@ data class PantryDTO(
 
 data class PantryItemDTO(
     val type: String,
-    val itemId: Int?,
+    val itemId: Int,
     val quantity: Double,
-    val expirationDate: String?
+    val expirationDate: String
 )
