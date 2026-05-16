@@ -17,4 +17,8 @@ class UserController(
         @PathVariable id:Int
     )=
         service.getPreview(id)
+
+    @GetMapping
+    fun getAll() =
+        service.getUsers()
 }

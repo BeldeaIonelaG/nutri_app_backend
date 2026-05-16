@@ -161,7 +161,7 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/auth/**","users/**").permitAll()
                     .requestMatchers("/**").hasRole("USER")
                     .anyRequest().authenticated()
             }

@@ -30,4 +30,8 @@ class UserService(
             .orElseThrow()
             .toPreviewDTO()
     }
+
+    fun getUsers(): List<UserPreviewDTO> =
+        repo.findAll()
+            .map { it.toPreviewDTO() }
 }
