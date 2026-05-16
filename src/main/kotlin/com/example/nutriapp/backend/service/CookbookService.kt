@@ -12,7 +12,8 @@ class CookbookService(
 ) {
 
     fun getAll(): List<CookbookEntity> =
-        repo.findAll().map { it.toDTO() }
+        //repo.findAll().map { it.toDTO() }
+        repo.findAll()
 
     fun getById(id: Int): CookbookDTO =
         repo.findById(id).orElseThrow().toDTO()
