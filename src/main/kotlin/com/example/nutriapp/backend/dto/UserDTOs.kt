@@ -12,3 +12,9 @@ data class AuthResponse(
     val email: String,
     val token: String
 )
+
+data class UserPreviewDTO(
+    val id:Int,
+    val username:String,
+    val email: String
+)
