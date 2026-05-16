@@ -11,7 +11,7 @@ class CookbookService(
     private val repo: CookbookRepository
 ) {
 
-    fun getAll(): List<CookbookDTO> =
+    fun getAll(): List<CookbookEntity> =
         repo.findAll().map { it.toDTO() }
 
     fun getById(id: Int): CookbookDTO =

@@ -45,6 +45,7 @@ class CookbookController(
 
         println("👤 CURRENT USER ID: $userId")
 
-        return service.getByUser(userId)
+        return service.getAll()
+        //return service.getByUser(userId)
     }
 }
