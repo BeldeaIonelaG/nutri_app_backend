@@ -4,15 +4,22 @@ import com.example.nutriapp.backend.dto.AlimentDTO
 import com.example.nutriapp.backend.entity.AlimentEntity
 import com.example.nutriapp.backend.entity.CompositionAlimentEntity
 import com.example.nutriapp.backend.entity.CompositionAlimentKey
+import com.example.nutriapp.backend.entity.PostContentEntity
+import com.example.nutriapp.backend.entity.PostContentKey
+import com.example.nutriapp.backend.entity.SocialPostEntity
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.AlimentRepository
 import com.example.nutriapp.backend.repository.NutrientRepository
+import com.example.nutriapp.backend.repository.SocialPostRepository
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class AlimentService(
     private val alimentRepo: AlimentRepository,
-    private val nutrientRepo: NutrientRepository
+    private val nutrientRepo: NutrientRepository,
+    private val socialRepo: SocialPostRepository
 ) {
     fun getAll(): List<AlimentDTO> =
         alimentRepo.findAll().map { it.toDTO() }
@@ -43,6 +50,7 @@ class AlimentService(
             aliment.compositions.add(comp)
         }
 
+        createAutoPost(saved.id!!,saved.name)
         return alimentRepo.save(saved).toDTO()
     }
 
@@ -71,5 +79,34 @@ class AlimentService(
 
     fun delete(id: Int) {
         alimentRepo.deleteById(id)
+    }
+
+    private fun createAutoPost(
+        alimentId:Int,
+        name:String
+    ){
+        val userId = (SecurityContextHolder.getContext().authentication?.principal ?: 0) as Int
+
+        val post=
+            SocialPostEntity(
+                dateTime = LocalDateTime.now(),
+                description = name,
+                visibility = "PUBLIC",
+                userId = userId
+            )
+
+        post.contents.add(
+            PostContentEntity(
+                id =
+                    PostContentKey(
+                        postId = 0,
+                        referenceId = alimentId,
+                        type = "ALIMENT"
+                    ),
+                post = post
+            )
+        )
+
+        socialRepo.save(post)
     }
 }

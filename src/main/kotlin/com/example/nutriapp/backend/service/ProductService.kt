@@ -3,21 +3,28 @@ package com.example.nutriapp.backend.service
 import com.example.nutriapp.backend.dto.ProductDTO
 import com.example.nutriapp.backend.entity.CompositionProductEntity
 import com.example.nutriapp.backend.entity.CompositionProductKey
+import com.example.nutriapp.backend.entity.PostContentEntity
+import com.example.nutriapp.backend.entity.PostContentKey
 import com.example.nutriapp.backend.entity.ProductBarcodeEntity
 import com.example.nutriapp.backend.entity.ProductEntity
 import com.example.nutriapp.backend.entity.ProductIngredientEntity
 import com.example.nutriapp.backend.entity.ProductIngredientKey
+import com.example.nutriapp.backend.entity.SocialPostEntity
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.repository.AlimentRepository
 import com.example.nutriapp.backend.repository.NutrientRepository
 import com.example.nutriapp.backend.repository.ProductRepository
+import com.example.nutriapp.backend.repository.SocialPostRepository
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ProductService(
     private val repo: ProductRepository,
     private val nutrientRepo: NutrientRepository,
-    private val alimentRepo: AlimentRepository
+    private val alimentRepo: AlimentRepository,
+    private val socialRepo: SocialPostRepository
 ) {
 
     fun getAll() = repo.findAll().map { it.toDTO() }
@@ -66,6 +73,7 @@ class ProductService(
             product.barcodes.add(ProductBarcodeEntity(it, product))
         }
 
+        createAutoPost(saved.id!!,saved.name)
         return repo.save(product).toDTO()
     }
 
@@ -110,4 +118,33 @@ class ProductService(
     }
 
     fun delete(id: Int) = repo.deleteById(id)
+
+    private fun createAutoPost(
+        productId:Int,
+        name:String
+    ){
+        val userId = (SecurityContextHolder.getContext().authentication?.principal ?: 0) as Int
+
+        val post=
+            SocialPostEntity(
+                dateTime =
+                    LocalDateTime.now(),
+                description = name,
+                visibility = "PUBLIC",
+                userId = userId
+            )
+
+        post.contents.add(
+            PostContentEntity(
+                id =
+                    PostContentKey(
+                        postId = 0,
+                        referenceId = productId,
+                        type = "PRODUCT"
+                    ),
+                post = post
+            )
+        )
+        socialRepo.save(post)
+    }
 }
