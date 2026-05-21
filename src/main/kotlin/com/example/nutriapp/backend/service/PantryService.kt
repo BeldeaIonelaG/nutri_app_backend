@@ -56,4 +56,31 @@ class PantryService(
             pantry.toDTO(items, access)
         }
     }
+
+    @Transactional
+    fun update(id:Int, dto:PantryDTO):PantryDTO {
+
+        val pantry= pantryRepo.findById(id).orElseThrow()
+
+        pantry.items.clear()
+        dto.items.forEach{
+            pantry.items.add(it.toEntity(pantry))
+        }
+
+        val existingAccess= accessRepo.findByIdPantryId(id)
+
+        accessRepo.deleteAll(existingAccess)
+
+        val access= dto.access.map{
+                accessRepo.save(
+                    PantryAccessEntity(
+                        id= PantryAccessKey(userId=it,pantryId=id)
+                    )
+                )
+            }
+
+        val saved= pantryRepo.save(pantry)
+
+        return saved.toDTO(saved.items,access)
+    }
 }
