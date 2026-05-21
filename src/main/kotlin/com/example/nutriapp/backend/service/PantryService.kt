@@ -47,7 +47,16 @@ class PantryService(
     }
 
     fun getByUser(userId: Int): List<PantryDTO> {
-        val pantries = pantryRepo.findByOwnerId(userId)
+        val owned = pantryRepo.findByOwnerId(userId)
+        val sharedIds= accessRepo.findByIdUserId(userId).map{it.id.pantryId}
+
+        val shared = if(sharedIds.isEmpty())
+                emptyList()
+            else
+                pantryRepo.findByIdIn(
+                    sharedIds
+                )
+        val pantries=(owned+shared).distinctBy{it.id}
 
         return pantries.map { pantry ->
             val items = itemRepo.findByIdPantryId(pantry.id)
@@ -82,5 +91,23 @@ class PantryService(
         val saved= pantryRepo.save(pantry)
 
         return saved.toDTO(saved.items,access)
+    }
+
+    @Transactional
+    fun giveAccess(userId:Int,pantryId:Int){
+        accessRepo.save(
+            PantryAccessEntity(
+                id=PantryAccessKey(userId=userId,pantryId=pantryId)
+            )
+        )
+    }
+
+    @Transactional
+    fun revokeAccess(
+        userId:Int,
+        pantryId:Int
+    ){
+        accessRepo.deleteById( PantryAccessKey(userId=userId,pantryId=pantryId)
+        )
     }
 }

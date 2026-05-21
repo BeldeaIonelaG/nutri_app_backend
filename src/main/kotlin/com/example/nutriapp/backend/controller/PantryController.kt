@@ -2,6 +2,7 @@ package com.example.nutriapp.backend.controller
 
 import com.example.nutriapp.backend.dto.PantryDTO
 import com.example.nutriapp.backend.service.PantryService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,4 +29,26 @@ class PantryController(
     @PutMapping("/{id}")
     fun update(@PathVariable id:Int,@RequestBody dto:PantryDTO) =
         service.update(id, dto)
+
+    @PostMapping("/{pantryId}/access/{userId}")
+    fun giveAccess(
+        @PathVariable pantryId:Int,
+        @PathVariable userId:Int
+    ){
+        service.giveAccess(
+            userId,
+            pantryId
+        )
+    }
+
+    @DeleteMapping("/{pantryId}/access/{userId}")
+    fun revokeAccess(
+        @PathVariable pantryId:Int,
+        @PathVariable userId:Int
+    ){
+        service.revokeAccess(
+            userId,
+            pantryId
+        )
+    }
 }

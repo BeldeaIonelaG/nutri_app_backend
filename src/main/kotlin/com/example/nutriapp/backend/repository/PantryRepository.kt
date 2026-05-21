@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface PantryRepository : JpaRepository<PantryEntity, Int> {
     fun findByOwnerId(ownerId: Int): List<PantryEntity>
+    fun findByIdIn(ids: List<Int>): List<PantryEntity>
 }
