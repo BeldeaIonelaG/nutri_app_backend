@@ -10,4 +10,8 @@ interface PantryItemRepository :
     fun findByIdPantryId(
         pantryId: Int
     ): List<PantryItemEntity>
+
+    fun deleteByIdPantryId(
+        pantryId:Int
+    )
 }

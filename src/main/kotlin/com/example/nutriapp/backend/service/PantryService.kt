@@ -71,10 +71,18 @@ class PantryService(
 
         val pantry= pantryRepo.findById(id).orElseThrow()
 
+        // remove old pantry items from DB
+        itemRepo.deleteByIdPantryId(id)
+
+        // remove references from Hibernate context
         pantry.items.clear()
-        dto.items.forEach{
-            pantry.items.add(it.toEntity(pantry))
-        }
+
+        // force deletion NOW
+        itemRepo.flush()
+
+        val newItems= dto.items.map{it.toEntity(pantry)}
+
+        itemRepo.saveAll(newItems)
 
         val existingAccess= accessRepo.findByIdPantryId(id)
 
