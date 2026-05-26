@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface DailyNeedRepository :
     JpaRepository<DailyNeedEntity, DailyNeedId> {
 
-    fun findByUserId(userId: Int): List<DailyNeedEntity>
+    fun findByIdUserId(userId: Int): List<DailyNeedEntity>
 
     fun deleteByUserId(userId: Int)
 }

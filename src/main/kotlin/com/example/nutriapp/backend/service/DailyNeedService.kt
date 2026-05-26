@@ -13,7 +13,7 @@ class DailyNeedService(
 ) {
 
     fun getByUser(userId: Int): List<DailyNeedDTO> =
-        repo.findByUserId(userId)
+        repo.findByIdUserId(userId)
             .map { it.toDTO() }
 
     /**
