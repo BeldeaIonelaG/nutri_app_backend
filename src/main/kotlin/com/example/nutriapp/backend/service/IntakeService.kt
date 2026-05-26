@@ -16,8 +16,11 @@ class IntakeService(
     private val nutrientRepo: NutrientIntakeRepository
 ) {
 
-    fun getAll(userId: Int): List<IntakeDTO> =
-        intakeRepo.findByUserId(userId).map { it.toDTO() }
+    fun getAll(userId:Int): List<IntakeDTO> {
+        val weekAgo = LocalDateTime.now().minusDays(7)
+
+        return intakeRepo.findByUserIdAndDateTimeAfter(userId,weekAgo).map {it.toDTO()}
+    }
 
     fun create(dto: IntakeDTO, userId: Int): IntakeDTO {
 
