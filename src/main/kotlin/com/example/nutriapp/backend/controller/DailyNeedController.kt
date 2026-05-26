@@ -15,16 +15,25 @@ class DailyNeedController(
     private val service: DailyNeedService
 ) {
 
-    // ✅ ONLY current user's data
-    @GetMapping("/{userId}")
-    fun getByUser(@PathVariable userId: Int) =
-        service.getByUser(userId)
+    @GetMapping
+    fun getByUser(
+        principal: java.security.Principal
+    ): List<DailyNeedDTO> {
+        return service.getByUser()
+    }
 
-    // ✅ Replace all (sync endpoint)
-    @PostMapping("/{userId}")
+    @PostMapping
     fun replaceAll(
-        @PathVariable userId: Int,
+        principal: java.security.Principal,
         @RequestBody needs: List<DailyNeedDTO>
-    ) =
-        service.replaceAll(userId, needs)
+    ) {
+
+        val userId =
+            principal.name.toInt()
+
+        service.replaceAll(
+            userId,
+            needs
+        )
+    }
 }

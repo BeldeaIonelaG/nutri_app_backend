@@ -5,6 +5,7 @@ import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.mappers.toEntity
 import com.example.nutriapp.backend.repository.DailyNeedRepository
 import jakarta.transaction.Transactional
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,9 +13,14 @@ class DailyNeedService(
     private val repo: DailyNeedRepository
 ) {
 
-    fun getByUser(userId: Int): List<DailyNeedDTO> =
-        repo.findByUserId(userId)
-            .map { it.toDTO() }
+    fun getByUser(): List<DailyNeedDTO> {
+        val auth = SecurityContextHolder.getContext().authentication
+
+        val userId = (auth?.principal ?: 0) as Int
+
+        return repo.findByUserId(userId).map { it.toDTO() }
+
+    }
 
     /**
      * Replace ALL user daily needs (safe sync)
