@@ -16,15 +16,42 @@ class AllergyController(
     private val service: AllergyService
 ) {
 
-    @GetMapping("/{userId}")
-    fun getByUser(@PathVariable userId: Int): List<AllergyDTO> =
-        service.getByUser(userId)
+    @GetMapping
+    fun getByUser(
+        principal: java.security.Principal
+    ): List<AllergyDTO> {
+
+        val userId =
+            principal.name.toInt()
+
+        return service.getByUser(userId)
+    }
 
     @PostMapping
-    fun add(@RequestBody dto: AllergyDTO): AllergyDTO =
-        service.add(dto)
+    fun add(
+        principal: java.security.Principal,
+        @RequestBody dto: AllergyDTO
+    ): AllergyDTO {
+
+        val userId =
+            principal.name.toInt()
+
+        return service.add(
+            dto.copy(userId = userId)
+        )
+    }
 
     @DeleteMapping
-    fun remove(@RequestBody dto: AllergyDTO) =
-        service.remove(dto)
+    fun remove(
+        principal: java.security.Principal,
+        @RequestBody dto: AllergyDTO
+    ) {
+
+        val userId =
+            principal.name.toInt()
+
+        service.remove(
+            dto.copy(userId = userId)
+        )
+    }
 }
