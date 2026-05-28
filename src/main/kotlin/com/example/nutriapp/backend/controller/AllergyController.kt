@@ -27,32 +27,20 @@ class AllergyController(
         return service.getByUser(userId)
     }
 
-    @PostMapping
-    fun add(
+    @PostMapping("/replace")
+    fun replaceAll(
+
         principal: java.security.Principal,
-        @RequestBody dto: AllergyDTO
-    ): AllergyDTO {
 
-        val userId =
-            principal.name.toInt()
-
-        return service.add(
-            dto.copy(userId = userId)
-        )
-    }
-
-    @DeleteMapping("/{alimentId}")
-    fun remove(
-        principal: java.security.Principal,
-        @PathVariable alimentId:Int
+        @RequestBody allergies: List<AllergyDTO>
     ){
 
         val userId =
             principal.name.toInt()
 
-        service.remove(
+        service.replaceAll(
             userId,
-            alimentId
+            allergies
         )
     }
 }

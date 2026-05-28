@@ -10,4 +10,6 @@ interface AllergyRepository :
     fun findByUserId(userId: Int): List<AllergyEntity>
 
     fun deleteByUserIdAndAlimentId(userId: Int, alimentId: Int)
+
+    fun deleteByUserId(userId:Int)
 }

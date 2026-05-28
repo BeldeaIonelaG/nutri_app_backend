@@ -4,6 +4,7 @@ import com.example.nutriapp.backend.dto.AllergyDTO
 import com.example.nutriapp.backend.mappers.toDTO
 import com.example.nutriapp.backend.mappers.toEntity
 import com.example.nutriapp.backend.repository.AllergyRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,14 +18,26 @@ class AllergyService(
     fun add(dto: AllergyDTO): AllergyDTO =
         repo.save(dto.toEntity()).toDTO()
 
-    fun remove(
+    @Transactional
+    fun replaceAll(
+
         userId:Int,
-        alimentId:Int
+
+        allergies: List<AllergyDTO>
     ){
 
-        repo.deleteByUserIdAndAlimentId(
-            userId,
-            alimentId
+        // delete old
+        repo.deleteByUserId(userId)
+
+        // insert new
+        repo.saveAll(
+
+            allergies.map {
+
+                it.copy(
+                    userId = userId
+                ).toEntity()
+            }
         )
     }
 }
