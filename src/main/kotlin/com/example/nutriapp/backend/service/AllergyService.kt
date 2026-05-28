@@ -17,7 +17,14 @@ class AllergyService(
     fun add(dto: AllergyDTO): AllergyDTO =
         repo.save(dto.toEntity()).toDTO()
 
-    fun remove(dto: AllergyDTO) {
-        repo.deleteByUserIdAndAlimentId(dto.userId, dto.alimentId)
+    fun remove(
+        userId:Int,
+        alimentId:Int
+    ){
+
+        repo.deleteByUserIdAndAlimentId(
+            userId,
+            alimentId
+        )
     }
 }

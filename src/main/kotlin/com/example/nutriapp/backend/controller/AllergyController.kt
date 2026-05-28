@@ -41,17 +41,18 @@ class AllergyController(
         )
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{alimentId}")
     fun remove(
         principal: java.security.Principal,
-        @RequestBody dto: AllergyDTO
-    ) {
+        @PathVariable alimentId:Int
+    ){
 
         val userId =
             principal.name.toInt()
 
         service.remove(
-            dto.copy(userId = userId)
+            userId,
+            alimentId
         )
     }
 }
