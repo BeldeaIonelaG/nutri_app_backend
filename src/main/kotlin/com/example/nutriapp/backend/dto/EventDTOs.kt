@@ -12,7 +12,8 @@ data class EventDTO(
     val name: String,
     val description: String,
     val invitations: List<EventInvitationDTO>,
-    val foods: List<EventFoodDTO>
+    val foods: List<EventFoodDTO>,
+    val hostId: Int
 )
 
 data class EventInvitationDTO(

@@ -15,6 +15,7 @@ fun EventEntity.toDTO(): EventDTO =
         name = name,
         description = description,
         invitations = invitations.map { it.toDTO() },
+        hostId = hostId,
         foods = foods.map {
             EventFoodDTO(
                 idFood = it.id.idFood,
