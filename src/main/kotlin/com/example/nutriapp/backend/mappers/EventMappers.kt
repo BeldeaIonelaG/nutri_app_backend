@@ -1,6 +1,7 @@
 package com.example.nutriapp.backend.mappers
 
 import com.example.nutriapp.backend.dto.EventDTO
+import com.example.nutriapp.backend.dto.EventFoodDTO
 import com.example.nutriapp.backend.dto.EventInvitationDTO
 import com.example.nutriapp.backend.entity.EventEntity
 import com.example.nutriapp.backend.entity.EventInvitationEntity
@@ -14,7 +15,12 @@ fun EventEntity.toDTO(): EventDTO =
         name = name,
         description = description,
         invitations = invitations.map { it.toDTO() },
-        foods = foods.map { it.id.idPost }
+        foods = foods.map {
+            EventFoodDTO(
+                idFood = it.id.idFood,
+                type = it.id.foodType
+            )
+        }
     )
 
 fun EventInvitationEntity.toDTO(): EventInvitationDTO =

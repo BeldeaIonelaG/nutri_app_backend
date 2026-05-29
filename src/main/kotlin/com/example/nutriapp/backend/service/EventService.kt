@@ -20,7 +20,8 @@ class EventService(
 ) {
 
     fun getAll(userId: Int): List<EventDTO> =
-        eventRepo.findAll().map { it.toDTO() }
+        eventRepo.findVisibleEvents(userId).map {it.toDTO()}
+        //eventRepo.findAll().map { it.toDTO() }
 
     fun create(dto: EventDTO, userId: Int): EventDTO {
 
@@ -38,12 +39,13 @@ class EventService(
         }
 
         // foods
-        dto.foods.forEach { postId ->
-            val food = EventFoodEntity(
-                id = EventFoodId(saved.id, postId),
-                event = saved
+        dto.foods.forEach {
+            foodRepo.save(
+                EventFoodEntity(
+                    id = EventFoodId(saved.id,it.idFood,it.type),
+                    event = saved
+                )
             )
-            foodRepo.save(food)
         }
 
         return eventRepo.findById(saved.id).get().toDTO()

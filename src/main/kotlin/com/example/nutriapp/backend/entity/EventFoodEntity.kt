@@ -8,10 +8,10 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.MapsId
 import jakarta.persistence.Table
 
-@Embeddable
 data class EventFoodId(
     val idEvent: Int = 0,
-    val idPost: Int = 0
+    val idFood: Int = 0,
+    val foodType: String = ""
 )
 
 @Entity

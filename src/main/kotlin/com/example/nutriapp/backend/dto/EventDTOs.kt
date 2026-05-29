@@ -1,5 +1,10 @@
 package com.example.nutriapp.backend.dto
 
+data class EventFoodDTO(
+    val idFood: Int,
+    val type: String
+)
+
 data class EventDTO(
     val id: Int?,
     val beginDateTime: String,
@@ -7,7 +12,7 @@ data class EventDTO(
     val name: String,
     val description: String,
     val invitations: List<EventInvitationDTO>,
-    val foods: List<Int> // postIds
+    val foods: List<EventFoodDTO>
 )
 
 data class EventInvitationDTO(
