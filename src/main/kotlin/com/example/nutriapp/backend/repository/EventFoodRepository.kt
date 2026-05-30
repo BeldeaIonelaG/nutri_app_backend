@@ -5,4 +5,6 @@ import com.example.nutriapp.backend.entity.EventFoodId
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface EventFoodRepository :
-    JpaRepository<EventFoodEntity, EventFoodId>
+    JpaRepository<EventFoodEntity, EventFoodId> {
+    fun deleteByIdIdEvent(  eventId:Int)
+    }

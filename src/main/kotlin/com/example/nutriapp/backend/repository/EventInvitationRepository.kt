@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 
 interface EventInvitationRepository :
-    JpaRepository<EventInvitationEntity, EventInvitationId>
+    JpaRepository<EventInvitationEntity, EventInvitationId> {
+    fun deleteByIdEventId(  eventId:Int)
+    }
 
 
