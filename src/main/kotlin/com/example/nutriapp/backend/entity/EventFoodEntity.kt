@@ -24,5 +24,7 @@ class EventFoodEntity(
     @ManyToOne
     @MapsId("idEvent")
     @JoinColumn(name = "id_event")
-    var event: EventEntity
+    var event: EventEntity,
+
+    var quantity: Double?
 )

@@ -34,5 +34,8 @@ class EventEntity(
     val invitations: MutableList<EventInvitationEntity> = mutableListOf(),
 
     @OneToMany(mappedBy = "event", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val foods: MutableList<EventFoodEntity> = mutableListOf()
+    val foods: MutableList<EventFoodEntity> = mutableListOf(),
+
+    @Column(name = "type")
+    var type: String
 )

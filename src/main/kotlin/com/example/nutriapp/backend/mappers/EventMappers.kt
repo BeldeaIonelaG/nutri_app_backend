@@ -16,10 +16,12 @@ fun EventEntity.toDTO(): EventDTO =
         description = description,
         invitations = invitations.map { it.toDTO() },
         hostId = hostId,
+        type = type,
         foods = foods.map {
             EventFoodDTO(
                 idFood = it.id.idFood,
-                type = it.id.foodType
+                type = it.id.foodType,
+                quantity = it.quantity,
             )
         }
     )
@@ -36,5 +38,6 @@ fun EventDTO.toEntity(userId: Int): EventEntity =
         endDateTime = LocalDateTime.parse(endDateTime),
         name = name,
         description = description,
-        hostId = userId
+        hostId = userId,
+        type = type
     )

@@ -2,7 +2,8 @@ package com.example.nutriapp.backend.dto
 
 data class EventFoodDTO(
     val idFood: Int,
-    val type: String
+    val type: String,
+    val quantity: Double?
 )
 
 data class EventDTO(
@@ -13,7 +14,8 @@ data class EventDTO(
     val description: String,
     val invitations: List<EventInvitationDTO>,
     val foods: List<EventFoodDTO>,
-    val hostId: Int
+    val hostId: Int,
+    val type: String
 )
 
 data class EventInvitationDTO(

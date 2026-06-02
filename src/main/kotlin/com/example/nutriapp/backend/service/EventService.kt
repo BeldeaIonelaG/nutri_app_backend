@@ -46,8 +46,9 @@ class EventService(
         dto.foods.forEach {
             foodRepo.save(
                 EventFoodEntity(
-                    id = EventFoodId(saved.id,it.idFood,it.type),
-                    event = saved
+                    id = EventFoodId(saved.id, it.idFood, it.type),
+                    event = saved,
+                    quantity = it.quantity,
                 )
             )
         }
@@ -105,6 +106,8 @@ class EventService(
         event.description =
             dto.description
 
+        event.type = dto.type
+
         eventRepo.save(event)
 
         invitationRepo
@@ -146,9 +149,9 @@ class EventService(
                             it.idFood,
                             it.type
                         ),
+                    quantity = it.quantity,
+                    event = event
 
-                    event =
-                        event
                 )
             )
         }
