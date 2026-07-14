@@ -23,6 +23,10 @@ class AuthService(
             throw RuntimeException("Email already exists")
         }
 
+        if (userRepo.findByUsername(username) != null) {
+            throw RuntimeException("Username already exists")
+        }
+
         val user = userRepo.save(
             UserEntity(
                 username = username,
